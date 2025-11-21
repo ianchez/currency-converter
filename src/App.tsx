@@ -1,32 +1,58 @@
 import './App.css'
 
-import { incrementByAmount, increment } from './redux/slices/counterSlice'
-import { useAppDispatch, useAppSelector } from './redux/hooks'
+// Hooks
+import { useCurrency } from './hooks/useCurrency'
 
+// Components
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select'
+import type { SelectChangeEvent } from '@mui/material/Select'
 
 function App() {
-  const count = useAppSelector((state) => state.counter.value)
-  const dispatch = useAppDispatch()
+  const { mainCurrency, currencies, setMainCurrency } = useCurrency()
 
-  const setCount = (value?: number) => {
-    if (value) {
-      dispatch(incrementByAmount(value))
-    } else {
-      dispatch(increment())
-    }
+  const handleMainCurrencyChange = ({ target }: SelectChangeEvent) => {
+    const { value } = target
+    setMainCurrency(value)
   }
+
+  const mapCurrencyToMenuItem = (items: Record<string, string>) =>
+    Object.entries(items).map(([code, name]) => (
+      <MenuItem key={code} value={code}>
+        {code.toUpperCase()} {name ? `(${name})` : ''}
+      </MenuItem>
+    ))
+
+  const mainCurrencySelect = (
+    <FormControl fullWidth>
+      <InputLabel id="select-label">Selected Currency</InputLabel>
+      <Select
+        labelId="select-label"
+        id="select"
+        value={mainCurrency}
+        label="Selected Currency"
+        onChange={handleMainCurrencyChange}
+      >
+        {currencies
+          ? mapCurrencyToMenuItem(currencies)
+          : <MenuItem value="" disabled>Loading...</MenuItem>
+        }
+      </Select>
+    </FormControl>
+  );
 
   return (
     <>
-      <h1>Title</h1>
+      <h1>Currency Exchange Rates</h1>
       <div className="card">
-        <button onClick={() => setCount()}>
-          count is {count}
-        </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Welcome! Please choose your main currency from the dropdown below.
         </p>
       </div>
+
+      {mainCurrencySelect}
 
       <p className="info">
         Learn more

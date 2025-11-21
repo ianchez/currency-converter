@@ -2,7 +2,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import { createLogger } from 'redux-logger'
 
 // Slices
-import counterReducer from './slices/counterSlice'
+import selectedCurrenciesReducer from './slices/selectedCurrenciesSlice'
+import { currenciesApi } from './services/currencies'
 
 // Configure logger middleware (only for development)
 const logger = createLogger({
@@ -12,13 +13,14 @@ const logger = createLogger({
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    selectedCurrencies: selectedCurrenciesReducer,
+    [currenciesApi.reducerPath]: currenciesApi.reducer,
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>
     import.meta.env.MODE !== 'production'
-      ? getDefaultMiddleware().concat(logger)
-      : getDefaultMiddleware(),
+      ? getDefaultMiddleware().concat(logger).concat(currenciesApi.middleware)
+      : getDefaultMiddleware().concat(currenciesApi.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
