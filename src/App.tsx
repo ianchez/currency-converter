@@ -1,7 +1,7 @@
 import './App.css'
 
 // Hooks
-import { useCurrency } from './hooks/useCurrency'
+import { useCurrencies } from './hooks/useCurrencies'
 
 // Components
 import InputLabel from '@mui/material/InputLabel';
@@ -11,7 +11,7 @@ import Select from '@mui/material/Select'
 import type { SelectChangeEvent } from '@mui/material/Select'
 
 function App() {
-  const { mainCurrency, currencies, setMainCurrency } = useCurrency()
+  const { mainCurrency, sideCurrencies, allCurrencies, setMainCurrency } = useCurrencies()
 
   const handleMainCurrencyChange = ({ target }: SelectChangeEvent) => {
     const { value } = target
@@ -35,8 +35,8 @@ function App() {
         label="Selected Currency"
         onChange={handleMainCurrencyChange}
       >
-        {currencies
-          ? mapCurrencyToMenuItem(currencies)
+        {allCurrencies
+          ? mapCurrencyToMenuItem(allCurrencies)
           : <MenuItem value="" disabled>Loading...</MenuItem>
         }
       </Select>
@@ -48,7 +48,7 @@ function App() {
       <h1>Currency Exchange Rates</h1>
       <div className="card">
         <p>
-          Welcome! Please choose your main currency from the dropdown below.
+          <b>Welcome!</b> Please choose your <b>main currency</b> from the dropdown below.
         </p>
       </div>
 
