@@ -5,6 +5,15 @@ import { store } from './redux/store';
 import './index.css';
 import App from './App.tsx';
 
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 const container = document.getElementById('root');
 
 if (container) {
@@ -13,7 +22,10 @@ if (container) {
   root.render(
     <StrictMode>
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
       </Provider>
     </StrictMode>,
   );

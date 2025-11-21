@@ -62,12 +62,20 @@
   font-weight: 500;
 }
 
+.currency-row:hover .side-currency-select {
+  font-weight: 600;
+}
+
 .currency-rate {
   font-size: 1.2rem;
   font-weight: 400;
   position: relative;
   margin: 0;
   top: 10px;
+}
+.currency-row:hover .currency-rate {
+  color: #4c9e46;
+  font-weight: 600;
 }
 
 .add-currency-button {
