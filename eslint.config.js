@@ -14,9 +14,9 @@ export default defineConfig([
       js.configs.recommended,
       tseslint.configs.recommendedTypeChecked,
       tseslint.configs.stylisticTypeChecked,
+      reactDom.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
-      reactDom.configs.recommended,
     ],
     languageOptions: {
       ecmaVersion: 2020,
@@ -30,6 +30,7 @@ export default defineConfig([
     rules: {
       // Put rules you want to override here
       "react-dom/no-dangerously-set-innerhtml": "warn",
+      "semi": ["error", "always"],
     },
   },
 ])

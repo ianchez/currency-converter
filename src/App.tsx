@@ -55,7 +55,7 @@ function App() {
   );
 
   const sideCurrencyRows = (selectedCurrency: string, rowNumber: string, currencyCode: string) => {
-    if (!mainCurrency ||!allCurrencies || !currencyRateByDate?.[selectedCurrency]) return null;
+    if (!mainCurrency || !allCurrencies || !currencyRateByDate?.[selectedCurrency]) return null;
 
     const rate = currencyRateByDate[selectedCurrency]?.[currencyCode];
     return (
