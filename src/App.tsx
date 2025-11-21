@@ -11,7 +11,13 @@ import Select from '@mui/material/Select'
 import type { SelectChangeEvent } from '@mui/material/Select'
 
 function App() {
-  const { mainCurrency, sideCurrencies, allCurrencies, setMainCurrency } = useCurrencies()
+  const {
+    mainCurrency,
+    sideCurrencies,
+    allCurrencies,
+    currencyRateByDate,
+    setMainCurrency
+  } = useCurrencies()
 
   const handleMainCurrencyChange = ({ target }: SelectChangeEvent) => {
     const { value } = target
