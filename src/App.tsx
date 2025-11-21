@@ -1,14 +1,14 @@
-import './App.css'
+import './App.css';
 
 // Hooks
-import { useCurrencies } from './hooks/useCurrencies'
+import { useCurrencies } from './hooks/useCurrencies';
 
 // Components
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select'
-import type { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select';
+import type { SelectChangeEvent } from '@mui/material/Select';
 
 function App() {
   const {
@@ -18,23 +18,23 @@ function App() {
     currencyRateByDate,
     setMainCurrency,
     setSideCurrency
-  } = useCurrencies()
+  } = useCurrencies();
 
   const handleMainCurrencyChange = ({ target }: SelectChangeEvent) => {
-    const { value } = target
-    setMainCurrency(value)
-  }
+    const { value } = target;
+    setMainCurrency(value);
+  };
 
   const handleSideCurrencyChange = (currencyRow: string, currencyCode: string) => {
-    setSideCurrency(currencyRow, currencyCode)
-  }
+    setSideCurrency(currencyRow, currencyCode);
+  };
 
   const mapCurrencyToMenuItem = (items: Record<string, string>) =>
     Object.entries(items).map(([code, name]) => (
       <MenuItem key={code} value={code}>
         {code.toUpperCase()} {name ? `(${name})` : ''}
       </MenuItem>
-    ))
+    ));
 
   const mainCurrencySelect = (
     <FormControl fullWidth>
@@ -81,7 +81,7 @@ function App() {
         <p>{rate?.toFixed(4) || 0}</p>
       </FormControl>
     );
-  }
+  };
 
   const sideCurrenciesRates = Object.entries(sideCurrencies)
     .map(([rowNumber , code]) => sideCurrencyRows(mainCurrency,rowNumber, code));
@@ -102,7 +102,7 @@ function App() {
         Learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
