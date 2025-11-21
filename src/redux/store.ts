@@ -1,15 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { createLogger } from 'redux-logger'
+import { configureStore } from '@reduxjs/toolkit';
+import { createLogger } from 'redux-logger';
 
 // Slices
-import selectedCurrenciesReducer from './slices/selectedCurrenciesSlice'
-import { currenciesApi } from './services/currencies'
+import selectedCurrenciesReducer from './slices/selectedCurrenciesSlice';
+import { currenciesApi } from './services/currencies';
 
 // Configure logger middleware (only for development)
 const logger = createLogger({
   collapsed: true,
   diff: true,
-})
+});
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +21,7 @@ export const store = configureStore({
     import.meta.env.MODE !== 'production'
       ? getDefaultMiddleware().concat(logger).concat(currenciesApi.middleware)
       : getDefaultMiddleware().concat(currenciesApi.middleware),
-})
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

@@ -1,27 +1,20 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Define a service using a base URL and expected endpoints
-const BASE_URL = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/'
+const BASE_URL = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/';
 const ENDPOINTS = {
   CURRENCIES: 'currency-api@latest/v1/currencies.json',
   CURRENCY_RATES_BY_DATE: ({ date, code }: { date: string; code: string }) =>
     `currency-api@${date}/v1/currencies/${code}.json `,
-}
-
-export type CurrenciesResponse = {
-  [key: string]: string
-}
-
-// More accurate version:
-export type CurrencyExchangeRates = {
-  [currency: string]: number;
 };
+
+export type CurrenciesResponse = Record<string, string>;
+
+export type CurrencyExchangeRates = Record<string, number>;
 
 export type CurrencyRateByDateResponse = {
   date: string;
-} & {
-  [currencyCode: string]: CurrencyExchangeRates;
-};
+} & Record<string, CurrencyExchangeRates>;
 
 export const currenciesApi = createApi({
   reducerPath: 'currenciesApi',
@@ -39,8 +32,8 @@ export const currenciesApi = createApi({
       }),
     }),
   }),
-})
+});
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetCurrenciesQuery, useGetCurrencyRateByDateQuery } = currenciesApi
+export const { useGetCurrenciesQuery, useGetCurrencyRateByDateQuery } = currenciesApi;
