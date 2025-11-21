@@ -1,7 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { setMainCurrency, setSideCurrency, addSideCurrency, removeSideCurrency, DEFAULT_CURRENCY, DEFAULT_SIDE_CURRENCIES } from '../redux/slices/selectedCurrenciesSlice';
 import { useGetCurrenciesQuery, useGetCurrencyRateByDateQuery } from '../redux/services/currencies';
+
+const getYesterday = (): Date => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday;
+};
 
 export const useCurrencies = () => {
   const dispatch = useAppDispatch();
@@ -9,14 +15,23 @@ export const useCurrencies = () => {
 
   // Setting yesterday to ensure we have data available
   // (sometimes today's data might not be available yet)
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  const [selectedDate, setSelectedDate] = useState<Date>(getYesterday());
+  const [debouncedDate, setDebouncedDate] = useState<Date>(getYesterday());
+
+  // Debounce date changes to avoid excessive API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedDate(selectedDate);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [selectedDate]);
 
   const { data: allCurrencies, isSuccess } = useGetCurrenciesQuery();
-  const { data: currencyRateByDate } = useGetCurrencyRateByDateQuery({
-    year: yesterday.getFullYear().toString(),
-    month: (yesterday.getMonth() + 1).toString(),
-    day: yesterday.getDate().toString(),
+  const { data: currencyRateByDate, isLoading, isFetching } = useGetCurrencyRateByDateQuery({
+    year: debouncedDate.getFullYear().toString(),
+    month: (debouncedDate.getMonth() + 1).toString(),
+    day: debouncedDate.getDate().toString(),
     currencyCode: main || DEFAULT_CURRENCY
   });
 
@@ -58,6 +73,9 @@ export const useCurrencies = () => {
     sideCurrencies: side,
     allCurrencies,
     currencyRateByDate,
+    selectedDate,
+    setSelectedDate,
+    isLoadingRates: isLoading || isFetching,
     setMainCurrency: setMainCurrencyHandler,
     setSideCurrency: setSideCurrencyHandler,
     addSideCurrency: addSideCurrencyHandler,

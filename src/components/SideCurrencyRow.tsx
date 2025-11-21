@@ -11,6 +11,7 @@ interface SideCurrencyRowProps {
   currencyRateByDate: Record<string, Record<string, number>> | undefined;
   sideCurrencies: Record<number, string>;
   canRemove: boolean;
+  isLoadingRates: boolean;
   onRemove: (position: number) => void;
   onChange: (rowNumber: string, currencyCode: string) => void;
 }
@@ -24,6 +25,7 @@ export const SideCurrencyRow = ({
   currencyRateByDate,
   sideCurrencies,
   canRemove,
+  isLoadingRates,
   onRemove,
   onChange
 }: SideCurrencyRowProps) => {
@@ -34,8 +36,8 @@ export const SideCurrencyRow = ({
       </MenuItem>
     ));
 
-  // Show skeleton when data is loading
-  if (!mainCurrency || !allCurrencies || !currencyRateByDate?.[selectedCurrency]) {
+  // Show skeleton when data is loading (only when currencies list is not available)
+  if (!mainCurrency || !allCurrencies) {
     return (
       <div 
         key={position}
@@ -46,14 +48,14 @@ export const SideCurrencyRow = ({
           className="side-currency-form-control"
           variant='standard'
         >
-          <Skeleton variant="rectangular" width="30%" height={40} sx={{ bgcolor: '#88429618' }}/>
-          <Skeleton variant="rectangular" width="15%" height={40} sx={{ bgcolor: '#88429618' }}/>
+          <SkeletonComponent width={30} />
+          <SkeletonComponent width={15} />
         </FormControl>
       </div>
     );
   }
 
-  const rate = currencyRateByDate[selectedCurrency]?.[currencyCode];
+  const rate = currencyRateByDate?.[selectedCurrency]?.[currencyCode];
   const selectedSideCurrencies = Object.values(sideCurrencies);
   const filteredCurrencies = Object.fromEntries(
     Object.entries(allCurrencies).filter(([code]) => 
@@ -78,6 +80,7 @@ export const SideCurrencyRow = ({
           onClick={() => onRemove(position)}
           color="error"
           className="delete-icon"
+          disabled={isLoadingRates}
         >
           <DeleteIcon fontSize="medium" />
         </IconButton>
@@ -101,14 +104,22 @@ export const SideCurrencyRow = ({
           label="Compare"
           onChange={handleChange}
           color="success"
+          disabled={isLoadingRates}
         >
           {allCurrencies
             ? mapCurrencyToMenuItem(filteredCurrencies)
             : <MenuItem value="" disabled>Loading...</MenuItem>
           }
         </Select>
-        <p className="currency-rate">{currencyCode ? rate?.toFixed(4) || 0 : null}</p>
+        {isLoadingRates || !currencyRateByDate?.[selectedCurrency] ? (
+          <SkeletonComponent />
+        ) : (
+          <p className="currency-rate">{currencyCode ? rate?.toFixed(4) ?? 0 : null}</p>
+        )}
       </FormControl>
     </div>
   );
 };
+
+const SkeletonComponent = ({width = 15}) =>
+  <Skeleton variant="text" width={`${width}%`} height={30} sx={{ bgcolor: "#c681db07" }} />;

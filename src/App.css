@@ -14,7 +14,11 @@
 .main-currency-select {
   font-size: 1.4rem !important;
   font-weight: 500 !important;
-  margin-bottom: 36px;
+  margin-bottom: 26px;
+}
+
+.date-picker {
+  margin-bottom: 26px !important;
 }
 
 .currency-row {
@@ -39,7 +43,7 @@
 .currency-row:hover .delete-icon {
   opacity: 1;
   border-radius: 5%;
-  background-color: rgba(255, 0, 0, 0.083);
+  background-color: rgba(49, 4, 4, 0.264);
 }
 
 .row-left-column {
@@ -84,6 +88,11 @@
   background-color: #bc75d273 !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
+}
+
+.add-currency-button:disabled {
+  background-color: #55555573 !important;
+  color: #222 !important;
 }
 
 @keyframes logo-spin {

@@ -4,12 +4,14 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 interface MainCurrencySelectProps {
   mainCurrency: string;
   allCurrencies: Record<string, string> | undefined;
+  isLoadingRates?: boolean;
   onChange: (value: string) => void;
 }
 
 export const MainCurrencySelect = ({
   mainCurrency,
   allCurrencies,
+  isLoadingRates,
   onChange
 }: MainCurrencySelectProps) => {
   const mapCurrencyToMenuItem = (items: Record<string, string>) =>
@@ -34,6 +36,7 @@ export const MainCurrencySelect = ({
         label="Selected Currency"
         onChange={handleChange}
         color="secondary"
+        disabled={isLoadingRates}
       >
         {allCurrencies
           ? mapCurrencyToMenuItem(allCurrencies)

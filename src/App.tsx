@@ -6,6 +6,7 @@ import { useCurrencies } from './hooks/useCurrencies';
 // Components
 import { SideCurrencyRow } from './components/SideCurrencyRow';
 import { MainCurrencySelect } from './components/MainCurrencySelect';
+import { DatePicker } from './components/DatePicker';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -15,6 +16,9 @@ function App() {
     sideCurrencies,
     allCurrencies,
     currencyRateByDate,
+    selectedDate,
+    setSelectedDate,
+    isLoadingRates,
     setMainCurrency,
     setSideCurrency,
     addSideCurrency,
@@ -37,6 +41,7 @@ function App() {
         currencyRateByDate={currencyRateByDate}
         sideCurrencies={sideCurrencies}
         canRemove={canRemove}
+        isLoadingRates={isLoadingRates}
         onRemove={removeSideCurrency}
         onChange={setSideCurrency}
       />
@@ -57,7 +62,12 @@ function App() {
       <MainCurrencySelect
         mainCurrency={mainCurrency}
         allCurrencies={allCurrencies}
+        isLoadingRates={isLoadingRates}
         onChange={setMainCurrency}
+      />
+      <DatePicker
+        selectedDate={selectedDate}
+        onChange={setSelectedDate}
       />
       {sideCurrenciesRates}
       
@@ -68,6 +78,7 @@ function App() {
           startIcon={<AddIcon />}
           onClick={addSideCurrency}
           className="add-currency-button"
+          disabled={isLoadingRates}
         >
           Add Currency
         </Button>
