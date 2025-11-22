@@ -42,3 +42,27 @@ npm run build
 # Preview production build
 npm run preview
 ```
+
+## Docker
+
+### Using Docker Compose
+
+```bash
+# Build and run
+docker-compose up -d
+
+# Stop
+docker-compose down
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Using Docker directly
+
+```bash
+# Build image
+docker build -t currency-exchange-rates .
+
+# Run container
+docker run -d -p 3000:80 currency-exchange-rates
+```
