@@ -3,6 +3,7 @@ import { FormControl, InputLabel, Select, MenuItem, IconButton, Skeleton } from 
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import { RATE_DECIMAL_PLACES } from '../constants/currency';
+import { mapCurrencyToMenuItem } from '../utils/currencySelectorUtils';
 
 interface SideCurrencyRowProps {
   position: number;
@@ -31,13 +32,6 @@ export const SideCurrencyRow = ({
   onRemove,
   onChange
 }: SideCurrencyRowProps) => {
-  const mapCurrencyToMenuItem = (items: Record<string, string>) =>
-    Object.entries(items).map(([code, name]) => (
-      <MenuItem key={code} value={code}>
-        {code.toUpperCase()} {name ? `(${name})` : ''}
-      </MenuItem>
-    ));
-
   const selectedSideCurrencies = Object.values(sideCurrencies);
   
   const filteredCurrencies = useMemo(() => {

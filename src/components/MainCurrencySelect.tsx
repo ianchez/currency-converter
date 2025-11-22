@@ -1,5 +1,6 @@
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material/Select';
+import { mapCurrencyToMenuItem } from '../utils/currencySelectorUtils';
 
 interface MainCurrencySelectProps {
   mainCurrency: string;
@@ -14,13 +15,6 @@ export const MainCurrencySelect = ({
   isLoadingRates,
   onChange
 }: MainCurrencySelectProps) => {
-  const mapCurrencyToMenuItem = (items: Record<string, string>) =>
-    Object.entries(items).map(([code, name]) => (
-      <MenuItem key={code} value={code} >
-        {code.toUpperCase()} {name ? `(${name})` : ''}
-      </MenuItem>
-    ));
-
   const handleChange = ({ target }: SelectChangeEvent) => {
     onChange(target.value);
   };
