@@ -3,20 +3,19 @@ import { useMemo } from 'react';
 
 // Hooks
 import { useCurrencies } from './hooks/useCurrencies';
+import { useErrorToast } from './hooks/useErrorToast';
 
 // Components
 import { SideCurrencyRow } from './components/SideCurrencyRow';
 import { MainCurrencySelect } from './components/MainCurrencySelect';
 import { DatePicker } from './components/DatePicker';
+import { ErrorToast } from './components/ErrorToast';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 
 // Constants
 import { MIN_SIDE_CURRENCIES, MAX_SIDE_CURRENCIES } from './constants/currency';
-
-// Utils
-import { getLast7Days } from './utils/dateUtils';
 
 function App() {
   const {
@@ -31,10 +30,12 @@ function App() {
     setMainCurrency,
     setSideCurrency,
     addSideCurrency,
-    removeSideCurrency
+    removeSideCurrency,
+    queries,
+    last7Days
   } = useCurrencies();
 
-  const last7Days = useMemo(() => getLast7Days(selectedDate), [selectedDate]);
+  const { errorMessage, showError, handleCloseError } = useErrorToast(queries, last7Days);
 
   const sideCurrenciesHeader = (
     <div className="date-header-row">
@@ -130,6 +131,12 @@ function App() {
         Historical data available for the last <b>90 days.</b> <br />
         Select an end date to view exchange rates for that day plus the previous 6 days <b>(7 days total).</b>
       </Typography>
+
+      <ErrorToast 
+        open={showError} 
+        message={errorMessage} 
+        onClose={handleCloseError} 
+      />
     </>
   );
 }

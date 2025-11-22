@@ -34,7 +34,8 @@ export const useCurrencies = () => {
     ratesByDate: currencyRatesByDate,
     loadingByDate,
     isLoading,
-    isFetching
+    isFetching,
+    queries
   } = useMultiDateRates(last7Days, currency);
 
   useEffect(() => {
@@ -82,6 +83,8 @@ export const useCurrencies = () => {
     setMainCurrency: setMainCurrencyHandler,
     setSideCurrency: setSideCurrencyHandler,
     addSideCurrency: addSideCurrencyHandler,
-    removeSideCurrency: removeSideCurrencyHandler
+    removeSideCurrency: removeSideCurrencyHandler,
+    queries,
+    last7Days
   };
 };
