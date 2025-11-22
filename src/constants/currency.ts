@@ -3,7 +3,6 @@ export const MIN_SIDE_CURRENCIES = 3;
 export const MAX_SIDE_CURRENCIES = 7;
 
 // Date constraints for historical rates
-export const MIN_DATE = '2024-04-01'; // Earliest available data (approximate)
 export const DATE_DEBOUNCE_MS = 200;
 
 // Rate display precision

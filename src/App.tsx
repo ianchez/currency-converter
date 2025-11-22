@@ -99,7 +99,9 @@ function App() {
       )}
 
       <p className="info">
-        Learn more
+        Historical data available for the last 90 days. <br />
+        Select an end date to view exchange rates for that day plus the previous 6 days 
+        <b>(7 days total).</b>
       </p>
     </>
   );

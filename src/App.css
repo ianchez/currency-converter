@@ -17,8 +17,12 @@
   margin-bottom: 26px;
 }
 
+.date-picker-container {
+  margin-bottom: 26px;
+}
+
 .date-picker {
-  margin-bottom: 26px !important;
+  margin-bottom: 4px !important;
 }
 
 .currency-row {
@@ -117,5 +121,5 @@
 }
 
 .info {
-  color: #bc75d2;
+  color: #bc75d2 !important;
 }

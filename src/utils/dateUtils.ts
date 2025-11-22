@@ -8,6 +8,15 @@ export const getYesterday = (): Date => {
 };
 
 /**
+ * Get the minimum date (90 days before today)
+ */
+export const getMinDate = (): Date => {
+  const date = new Date();
+  date.setDate(date.getDate() - 90);
+  return date;
+};
+
+/**
  * Format a Date object to YYYY-MM-DD string for HTML date inputs
  */
 export const formatDateForInput = (date: Date): string => {
@@ -24,4 +33,13 @@ export const clampDate = (date: Date, min: Date, max: Date): Date => {
   if (date < min) return min;
   if (date > max) return max;
   return date;
+};
+
+/**
+ * Get a date range string for 7 days ending on the given date
+ */
+export const getDateRange = (endDate: Date): string => {
+  const startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - 6);
+  return `${formatDateForInput(startDate)} to ${formatDateForInput(endDate)}`;
 };
