@@ -43,3 +43,16 @@ export const getDateRange = (endDate: Date): string => {
   startDate.setDate(endDate.getDate() - 6);
   return `${formatDateForInput(startDate)} to ${formatDateForInput(endDate)}`;
 };
+
+/**
+ * Get an array of the last 7 dates (including and going back from the given date)
+ */
+export const getLast7Days = (endDate: Date): Date[] => {
+  const dates: Date[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(endDate);
+    date.setDate(endDate.getDate() - i);
+    dates.push(date);
+  }
+  return dates;
+};

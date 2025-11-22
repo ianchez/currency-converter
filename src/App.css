@@ -25,6 +25,48 @@
   margin-bottom: 4px !important;
 }
 
+.date-header-row {
+  display: grid;
+  grid-template-columns: 1fr repeat(7, 1fr);
+  margin-bottom: 8px;
+  padding: 0 0 8px 0;
+  border-bottom: 1px solid #bc75d233;
+}
+
+.empty-header-cell {
+  min-width: 160px;
+  width: 40%;
+}
+
+.date-header-cell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #8b6198;
+  padding: 0 4px;
+}
+
+.date-header-cell:last-child {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #bc75d2;
+  padding: 0 4px;
+}
+
+.rates-header {
+  margin: 20px 0 16px 0;
+}
+
+.rates-header h3 {
+  color: #bc75d2;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
 .currency-row {
   position: relative;
   margin-bottom: 16px;
@@ -57,8 +99,8 @@
 }
 
 .side-currency-form-control {
-  flex-direction: row !important;
-  justify-content: space-between;
+  display: grid !important;
+  grid-template-columns: 1fr repeat(7, 1fr);
   align-items: center;
   height: 52px;
 }
@@ -74,16 +116,43 @@
   font-weight: 600;
 }
 
-.currency-rate {
-  font-size: 1.2rem;
-  font-weight: 400;
-  position: relative;
+.rate-date-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #bc75d2;
   margin: 0;
-  top: 10px;
+  margin-bottom: 4px;
+  text-align: right;
+}
+
+.currency-rate {
+  margin: 0;
+  text-align: center;
+  margin-bottom: 8px;
 }
 .currency-row:hover .currency-rate {
-  color: #4c9e46;
+  color: #469e5c;
   font-weight: 600;
+}
+
+.rate-cell {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 100%;
+  padding-right: 4px;
+  font-size: 0.9rem;
+  font-weight: 200;
+  color: #e9c9f3cb;
+}
+.rate-cell:last-child {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #b670cbad;
+}
+.rate-cell:hover {
+  font-weight: 600;
+  font-size: 1.2rem;
 }
 
 .add-currency-button {

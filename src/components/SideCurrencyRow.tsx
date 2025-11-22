@@ -2,8 +2,8 @@ import { useMemo, useCallback } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, IconButton, Skeleton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { SelectChangeEvent } from '@mui/material/Select';
-import { RATE_DECIMAL_PLACES } from '../constants/currency';
 import { mapCurrencyToMenuItem } from '../utils/currencySelectorUtils';
+import { formatRate } from '../utils/formatUtils';
 
 interface SideCurrencyRowProps {
   position: number;
@@ -15,6 +15,7 @@ interface SideCurrencyRowProps {
   sideCurrencies: Record<number, string>;
   canRemove: boolean;
   isLoadingRates: boolean;
+  last7Days: Date[];
   onRemove: (position: number) => void;
   onChange: (rowNumber: string, currencyCode: string) => void;
 }
@@ -29,6 +30,7 @@ export const SideCurrencyRow = ({
   sideCurrencies,
   canRemove,
   isLoadingRates,
+  last7Days,
   onRemove,
   onChange
 }: SideCurrencyRowProps) => {
@@ -60,8 +62,10 @@ export const SideCurrencyRow = ({
           className="side-currency-form-control"
           variant='standard'
         >
-          <SkeletonComponent width={30} />
-          <SkeletonComponent width={15} />
+          <SkeletonComponent width={100} />
+          {last7Days.map((_, index) => (
+            <SkeletonComponent key={index} width={80} />
+          ))}
         </FormControl>
       </div>
     );
@@ -79,9 +83,6 @@ export const SideCurrencyRow = ({
       <DeleteIcon fontSize="medium" />
     </IconButton>
   ) : null;
-
-  const rate =
-    currencyRateByDate?.[selectedCurrency]?.[currencyCode]?.toFixed(RATE_DECIMAL_PLACES) ?? 'N/A';
 
   return (
     <div key={position} className="currency-row">
@@ -112,11 +113,20 @@ export const SideCurrencyRow = ({
             : <MenuItem value="" disabled>Loading...</MenuItem>
           }
         </Select>
-        {isLoadingRates || !currencyRateByDate?.[selectedCurrency] ? (
-          <SkeletonComponent />
-        ) : (
-          <p className="currency-rate">{currencyCode ? rate : null}</p>
-        )}
+        {last7Days.map((_, index) => {
+          const rateForDate = currencyRateByDate?.[selectedCurrency]?.[currencyCode];
+          const formattedRate = rateForDate ? formatRate(rateForDate) : 'N/A';
+          
+          return (
+            <div key={index} className="rate-cell">
+              {isLoadingRates || !currencyRateByDate?.[selectedCurrency] ? (
+                <SkeletonComponent width={80} />
+              ) : (
+                <p className="currency-rate">{currencyCode ? formattedRate : null}</p>
+              )}
+            </div>
+          );
+        })}
       </FormControl>
     </div>
   );

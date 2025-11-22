@@ -14,6 +14,9 @@ import AddIcon from '@mui/icons-material/Add';
 // Constants
 import { MIN_SIDE_CURRENCIES, MAX_SIDE_CURRENCIES } from './constants/currency';
 
+// Utils
+import { getLast7Days } from './utils/dateUtils';
+
 function App() {
   const {
     mainCurrency,
@@ -28,6 +31,22 @@ function App() {
     addSideCurrency,
     removeSideCurrency
   } = useCurrencies();
+
+  const last7Days = useMemo(() => getLast7Days(selectedDate), [selectedDate]);
+
+  const sideCurrenciesHeader = (
+    <div className="date-header-row">
+      <div className="empty-header-cell"></div> {/* Empty cell for alignment */}
+      {last7Days.map((date, index) => (
+        <div key={index} className="date-header-cell">
+          {date.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric'
+          })}
+        </div>
+      ))}
+    </div>
+  );  
 
   const sideCurrenciesRates = useMemo(() => {
     return Object.entries(sideCurrencies).map(([rowNumber, code]) => {
@@ -47,6 +66,7 @@ function App() {
           sideCurrencies={sideCurrencies}
           canRemove={canRemove}
           isLoadingRates={isLoadingRates}
+          last7Days={last7Days}
           onRemove={removeSideCurrency}
           onChange={setSideCurrency}
         />
@@ -58,6 +78,7 @@ function App() {
     allCurrencies,
     currencyRateByDate,
     isLoadingRates,
+    last7Days,
     removeSideCurrency,
     setSideCurrency
   ]);
@@ -83,6 +104,8 @@ function App() {
         selectedDate={selectedDate}
         onChange={setSelectedDate}
       />
+
+      {sideCurrenciesHeader}
       {sideCurrenciesRates}
       
       {canAddMore && (

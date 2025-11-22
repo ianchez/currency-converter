@@ -3,8 +3,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SideCurrencyRow } from '../components/SideCurrencyRow';
 import { mockCurrencies, mockCurrencyRates, mockSideCurrencies } from './helpers/testUtils';
+import { getLast7Days } from '../utils/dateUtils';
+import { formatRate } from '../utils/formatUtils';
 
 describe('SideCurrencyRow', () => {
+  const testDate = new Date('2025-11-22T12:00:00Z');
+  const last7Days = getLast7Days(testDate);
+  
   const defaultProps = {
     position: 1,
     currencyCode: 'usd',
@@ -15,6 +20,7 @@ describe('SideCurrencyRow', () => {
     sideCurrencies: mockSideCurrencies,
     canRemove: false,
     isLoadingRates: false,
+    last7Days: last7Days,
     onRemove: vi.fn(),
     onChange: vi.fn()
   };
@@ -28,8 +34,10 @@ describe('SideCurrencyRow', () => {
   it('displays the exchange rate for selected currency', () => {
     render(<SideCurrencyRow {...defaultProps} />);
     
-    const rate = mockCurrencyRates.gbp.usd.toFixed(4);
-    expect(screen.getByText(rate)).toBeInTheDocument();
+    const rate = formatRate(mockCurrencyRates.gbp.usd);
+    const rateElements = screen.getAllByText(rate);
+    // Should have 7 instances (one for each day)
+    expect(rateElements.length).toBe(7);
   });
 
   it('shows skeleton when mainCurrency is not set', () => {
@@ -174,7 +182,9 @@ describe('SideCurrencyRow', () => {
     
     render(<SideCurrencyRow {...defaultProps} currencyRateByDate={ratesWithoutUsd} />);
     
-    expect(screen.getByText('N/A')).toBeInTheDocument();
+    const naElements = screen.getAllByText('N/A');
+    // Should have 7 instances (one for each day)
+    expect(naElements.length).toBe(7);
   });
 
   it('shows correct label when no currency is selected', () => {
@@ -183,19 +193,24 @@ describe('SideCurrencyRow', () => {
     expect(screen.getByText('Select a Currency')).toBeInTheDocument();
   });
 
-  it('displays rate with 4 decimal places', () => {
+  it('displays rate with proper formatting', () => {
     render(<SideCurrencyRow {...defaultProps} />);
     
-    const rate = mockCurrencyRates.gbp.usd.toFixed(4);
-    expect(screen.getByText(rate)).toBeInTheDocument();
-    expect(screen.getByText(/\.\d{4}$/)).toBeInTheDocument();
+    const rate = formatRate(mockCurrencyRates.gbp.usd);
+    const rateElements = screen.getAllByText(rate);
+    // Should have 7 instances (one for each day)
+    expect(rateElements.length).toBe(7);
   });
 
   it('shows null rate when no currency is selected', () => {
     render(<SideCurrencyRow {...defaultProps} currencyCode="" />);
     
-    const rateElement = document.querySelector('.currency-rate');
-    expect(rateElement?.textContent).toBe('');
+    const rateElements = document.querySelectorAll('.currency-rate');
+    // Should have 7 rate cells, all empty
+    expect(rateElements.length).toBe(7);
+    rateElements.forEach(element => {
+      expect(element.textContent).toBe('');
+    });
   });
 
   it('renders with correct position value', () => {
