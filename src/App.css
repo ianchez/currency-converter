@@ -79,6 +79,16 @@
   padding: 0 4px;
 }
 
+.date-header-cell.trend-header {
+  justify-content: center;
+}
+
+@media (max-width: 500px) {
+  .date-header-cell.trend-header {
+    display: none;
+  }
+}
+
 .rates-header {
   margin: 20px 0 16px 0;
 }
@@ -123,7 +133,7 @@
 
 .side-currency-form-control {
   display: grid !important;
-  grid-template-columns: minmax(70px, 1fr) 100px repeat(7, 1fr);
+  grid-template-columns: minmax(70px, 1fr) repeat(7, 1fr);
   align-items: center;
   height: 52px;
 }
@@ -214,6 +224,12 @@
 
 .sparkline-cell {
   padding: 0 0 0 16px;
+}
+
+@media (max-width: 500px) {
+  .sparkline-cell {
+    display: none;
+  }
 }
 
 .add-currency-button {
