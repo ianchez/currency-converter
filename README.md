@@ -1,36 +1,34 @@
-# React + TypeScript + Vite
+# Currency Converter
 
-This is a simple React application bootstrapped with Vite and TypeScript.
+A modern currency converter application with historical exchange rates and interactive trend visualization.
 
-## Features
-
-- React 19
-- TypeScript
-- Vite for fast development and building
-- Redux Toolkit for state management
-- ESLint and Prettier for code quality and formatting
-
-## Getting Started
+## Quick Start
 
 ### Prerequisites
 
-- Node.js (version 14 or above)
-- npm or yarn
+- Node.js 14 or above
 
-### Installation
+### Installation & Running
 
-1. Clone the repository:
-2. Navigate to the project directory:
-3. Install the dependencies:
-    `npm install`
-    - or
-    `yarn install`
+```bash
+# Install dependencies
+npm install
 
-### Running the Application
+# Start development server
+npm run dev
+```
 
-To start the development server, run:
-    `npm run dev`
-    - or
-    `yarn dev`
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-The application will be available at `http://localhost:5173/`.
+### Other Commands
+
+```bash
+# Run tests
+npm test
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
