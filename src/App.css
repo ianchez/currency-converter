@@ -158,6 +158,15 @@
   text-align: center;
   margin-bottom: 8px;
 }
+
+.currency-rate.rate-small {
+  font-size: 0.8em;
+}
+
+.currency-rate.rate-tiny {
+  font-size: 0.65em;
+}
+
 .currency-row:hover .currency-rate {
   color: var(--color-rate-hover);
   font-weight: 600;

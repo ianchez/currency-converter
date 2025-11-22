@@ -101,67 +101,87 @@ export const SideCurrencyRow = ({
     </IconButton>
   ) : null;
 
+  const sideCurrencySelect = (
+    <FormControl
+      fullWidth
+      variant='standard'
+    >
+      <InputLabel
+        id={`select-compare-currency-label-${currencyCode}`}
+        color="success"
+      >
+        {currencyCode ? "Comparing with:" : "Select a Currency"}
+      </InputLabel>
+      <Select
+        labelId={`select-compare-currency-label-${currencyCode}`}
+        id={`select-compare-currency-${currencyCode}`}
+        className="side-currency-select"
+        value={currencyCode}
+        label="Compare"
+        onChange={handleChange}
+        color="success"
+        disabled={isLoadingRates}
+      >
+        {allCurrencies
+          ? mapCurrencyToMenuItem(filteredCurrencies)
+          : <MenuItem value="" disabled>Loading...</MenuItem>
+        }
+      </Select>
+    </FormControl>
+  );
+
+  const trendChart = (
+    <div className="sparkline-cell">
+      {currencyCode && sparklineData.some(d => d.rate > 0) ? (
+        <RateSparkline 
+          data={sparklineData} 
+          color="#bc75d2" 
+          hoveredIndex={hoveredIndex}
+          onHover={setHoveredIndex}
+        />
+      ) : null}
+    </div>
+  );
+
+  const dailyRate = (date: Date, index: number) => {
+    const dateKey = date.toISOString().split('T')[0];
+    const rateForDate = currencyRatesByDate[dateKey]?.[selectedCurrency]?.[currencyCode];
+    const formattedRate = rateForDate ? formatRate(rateForDate) : 'N/A';
+    const isLoadingThisDate = loadingByDate[dateKey] ?? false;
+    
+    // Determine font size class based on number of characters
+    const getFontSizeClass = (rate: string) => {
+      if (rate === 'N/A') return '';
+      if (rate.length > 10) return 'rate-tiny';
+      if (rate.length > 8) return 'rate-small';
+      return '';
+    };
+    
+    return (
+      <div 
+        key={date.toISOString()} 
+        className={`rate-cell ${hoveredIndex === index ? 'hovered' : ''}`}
+        onMouseEnter={() => setHoveredIndex(index)}
+        onMouseLeave={() => setHoveredIndex(null)}
+      >
+        {isLoadingThisDate || !currencyRatesByDate[dateKey]?.[selectedCurrency] ? (
+          <SkeletonComponent width={80} />
+        ) : (
+          <p className={`currency-rate ${getFontSizeClass(formattedRate)}`}>
+            {currencyCode ? formattedRate : null}
+          </p>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div key={position} className="currency-row">
       {deleteIconButton}
       <div className="side-currency-form-control">
-        <FormControl
-          fullWidth
-          variant='standard'
-        >
-          <InputLabel
-            id={`select-compare-currency-label-${currencyCode}`}
-            color="success"
-          >
-            {currencyCode ? "Comparing with:" : "Select a Currency"}
-          </InputLabel>
-          <Select
-            labelId={`select-compare-currency-label-${currencyCode}`}
-            id={`select-compare-currency-${currencyCode}`}
-            className="side-currency-select"
-            value={currencyCode}
-            label="Compare"
-            onChange={handleChange}
-            color="success"
-            disabled={isLoadingRates}
-          >
-            {allCurrencies
-              ? mapCurrencyToMenuItem(filteredCurrencies)
-              : <MenuItem value="" disabled>Loading...</MenuItem>
-            }
-          </Select>
-        </FormControl>
-        <div className="sparkline-cell">
-          {currencyCode && sparklineData.some(d => d.rate > 0) ? (
-            <RateSparkline 
-              data={sparklineData} 
-              color="#bc75d2" 
-              hoveredIndex={hoveredIndex}
-              onHover={setHoveredIndex}
-            />
-          ) : null}
-        </div>
-        {last7Days.map((date, index) => {
-          const dateKey = date.toISOString().split('T')[0];
-          const rateForDate = currencyRatesByDate[dateKey]?.[selectedCurrency]?.[currencyCode];
-          const formattedRate = rateForDate ? formatRate(rateForDate) : 'N/A';
-          const isLoadingThisDate = loadingByDate[dateKey] ?? false;
-          
-          return (
-            <div 
-              key={index} 
-              className={`rate-cell ${hoveredIndex === index ? 'hovered' : ''}`}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              {isLoadingThisDate || !currencyRatesByDate[dateKey]?.[selectedCurrency] ? (
-                <SkeletonComponent width={80} />
-              ) : (
-                <p className="currency-rate">{currencyCode ? formattedRate : null}</p>
-              )}
-            </div>
-          );
-        })}
+        {sideCurrencySelect}
+        {trendChart}
+        {last7Days.map(dailyRate)}
       </div>
     </div>
   );
